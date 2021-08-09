@@ -41,7 +41,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s", content)
+	fmt.Printf("%s\n", content)
+	fmt.Printf("Now you can execute (you'll need the API key from https://console.cloud.google.com/apis/credentials?project=cmdg-2021-08):\n");
+	fmt.Printf("curl 'https://content-gmail.googleapis.com/gmail/v1/users/ss401533%40gmail.com/messages?key=<your key>' -H 'authorization: Bearer <your token>'");
 
 }
 
