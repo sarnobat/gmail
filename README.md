@@ -5,7 +5,7 @@
 It's a pain to be honest
 
 1) Enable Oauth consent screen (needs to be Production for mine to work)
-The scope must be added manually and cannot be relative (e.g. it must be https://www.googleapis.com/auth/gmail.readonly)
+   * The scope must be added manually and cannot be relative (e.g. it must be https://www.googleapis.com/auth/gmail.readonly)
 
 2) Create an API Key
 
