@@ -74,7 +74,7 @@ func saveToken(path string, token *oauth2.Token) {
 
 func main() {
 	ctx := context.Background()
-	b, err := ioutil.ReadFile("credentials.json")
+	b, err := ioutil.ReadFile("credentials.do_not_source_control.json")
 	if err != nil {
 		log.Fatalf("Unable to read client secret file: %v", err)
 	}
@@ -104,20 +104,24 @@ func main() {
 	for _, l := range r.Labels {
 		fmt.Printf("- %s) %s\n", l.Id, l.Name)
 	}
+	nextPageToken := "0"
+	
+	for nextPageToken != "" {
+	
+		mes, err := srv.Users.Messages.List(user).Q("label:INBOX").MaxResults(500).PageToken(nextPageToken).Do()
+		if err != nil {
+			log.Fatalf("Error: %v", err)
+		}
+		nextPageToken = mes.NextPageToken
+		for _, e := range mes.Messages {
 
-	mes, err := srv.Users.Messages.List(user).Q("label:INBOX").MaxResults(500).Do()
-	if err != nil {
-		log.Fatalf("Error: %v", err)
-	}
-	for _, e := range mes.Messages {
+			msg, _ := srv.Users.Messages.Get("me", e.Id).Format("full").Do()
 
-		msg, _ := srv.Users.Messages.Get("me", e.Id).Format("full").Do()
-
-		from := getMessageHeader(msg.Payload.Headers, "From")
-		fmt.Print(e.Id)
-		fmt.Print("\t")
-		fmt.Print(from)
-		fmt.Print("\t")
+			from := getMessageHeader(msg.Payload.Headers, "From")
+			fmt.Print(e.Id)
+			fmt.Print("\t")
+			fmt.Print(from)
+			fmt.Print("\t")
 
 // 		for _, part := range msg.Payload.Parts {
 // 			if part.MimeType == "text/plain" {
@@ -126,7 +130,8 @@ func main() {
 // 				fmt.Println(html)
 // 			}
 // 		}
-		fmt.Print("\n")
+			fmt.Print("\n")
+		}
 	}
 }
 
