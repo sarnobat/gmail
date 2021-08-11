@@ -35,6 +35,30 @@ It's a lot of work (which is why Oauth is so secure).
 
 ```
 
+```
+               +-----------+
+               | client ID | -+
+               +-----------+  |
+                 |            |
+                 |            |
+                 v            |
+               +-----------+  |
+               |   code    |  |
+               +-----------+  |
+                 |            |
+                 |            |
+                 v            v
++--------+     +-----------------------+
+| secret | --> |     access_token      |
++--------+     +-----------------------+
+                 |                 ^
+                 |                 |
+                 v                 |
+               +-----------+     +-----+
+               | response  |     | key |
+               +-----------+     +-----+
+
+```
 * There aren't many code samples that use shell scripting instead of Python etc. Oauth is a lot of work and doesn't really lend itself to linear Unix pipelines :(
 
 ### Notes
