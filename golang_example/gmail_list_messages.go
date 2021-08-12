@@ -108,19 +108,21 @@ func main() {
 	
 	for nextPageToken != "" {
 	
-		mes, err := srv.Users.Messages.List(user).Q("label:INBOX").MaxResults(500).PageToken(nextPageToken).Do()
+		mes, err := srv.Users.Messages.List(user).Q("*").MaxResults(500).PageToken(nextPageToken).Do()
 		if err != nil {
 			log.Fatalf("Error: %v", err)
 		}
 		nextPageToken = mes.NextPageToken
 		for _, e := range mes.Messages {
 
-			msg, _ := srv.Users.Messages.Get("me", e.Id).Format("full").Do()
+			// format "metadata" doesn't improve performance
+			msg, _ := srv.Users.Messages.Get("me", e.Id).Format("metadata").Do()
 
-			from := getMessageHeader(msg.Payload.Headers, "From")
 			fmt.Print(e.Id)
 			fmt.Print("\t")
-			fmt.Print(from)
+			fmt.Print(getMessageHeader(msg.Payload.Headers, "From"))
+			fmt.Print("\t:: ")
+			fmt.Print(getMessageHeader(msg.Payload.Headers, "Subject"))
 			fmt.Print("\t")
 
 // 		for _, part := range msg.Payload.Parts {
